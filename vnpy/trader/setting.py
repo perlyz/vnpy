@@ -27,6 +27,8 @@ SETTINGS: dict = {
     "datafeed.name": "",
     "datafeed.username": "",
     "datafeed.password": "",
+    # qfq-前复权 hfq-后复权 ""-不复权，影响datafeed和database存储
+    "data.adjust": "",
 
     "database.timezone": get_localzone_name(),
     "database.name": "sqlite",
