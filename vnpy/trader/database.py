@@ -61,6 +61,9 @@ class BaseDatabase(ABC):
         """
         pass
 
+    def save_bar_data_batch(self, bars_batch: list[list[BarData]]) -> bool:
+        return False
+
     @abstractmethod
     def save_tick_data(self, ticks: list[TickData], stream: bool = False) -> bool:
         """
