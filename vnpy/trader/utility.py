@@ -37,17 +37,24 @@ def generate_vt_symbol(symbol: str, exchange: Exchange) -> str:
 def _get_trader_dir(temp_name: str) -> tuple[Path, Path]:
     """
     Get path where trader is running in.
+    Check current directory and all parent directories for temp_name folder.
+    If not found, use home directory and create the folder.
     """
-    cwd: Path = Path.cwd()
-    temp_path: Path = cwd.joinpath(temp_name)
+    # Start from current working directory
+    current_path = Path.cwd()
 
-    # If .vntrader folder exists in current working directory,
-    # then use it as trader running path.
-    if temp_path.exists():
-        return cwd, temp_path
+    # Traverse up through parent directories
+    while current_path != current_path.parent:  # Stop at root directory
+        temp_path = current_path.joinpath(temp_name)
 
-    # Otherwise use home path of system.
-    home_path: Path = Path.home()
+        if temp_path.exists() and temp_path.is_dir():
+            return current_path, temp_path
+
+        # Move to parent directory
+        current_path = current_path.parent
+
+    # If not found in any parent directory, use home path
+    home_path = Path.home()
     temp_path = home_path.joinpath(temp_name)
 
     # Create .vntrader folder under home path if not exist.
